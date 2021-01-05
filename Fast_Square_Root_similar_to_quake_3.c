@@ -1,10 +1,13 @@
-// Magic number 
-// i = 0x1fbd1df5 + (i >> 1);
-// Inspirations :
-// https://en.m.wikipedia.org/wiki/Fast_inverse_square_root
-// http://h14s.p5r.org/2012/09/0x5f3759df.html
-// Awesome article 
-// Loved it !
+/*
+* Magic number 
+* i = 0x1fbd1df5 + (i >> 1);
+* Inspirations :
+* https://en.m.wikipedia.org/wiki/Fast_inverse_square_root
+* http://h14s.p5r.org/2012/09/0x5f3759df.html
+* Awesome article 
+* Loved it !
+* Actually Not similar, Same except 3 lines
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
