@@ -6,7 +6,7 @@
 * http://h14s.p5r.org/2012/09/0x5f3759df.html
 * Awesome article 
 * Loved it !
-* Actually Not similar, Same except 3 lines
+* Actually Not similar, Same except 5 lines
 */
 
 #include <stdio.h>
@@ -14,11 +14,10 @@
 
 float Sqrt( float number ){
 
-    float x2, y;
+    float y;
     long i;
     const float half = 0.5F;
 
-    x2 = half * number;
     y  = number;
 
     i  = * ( long * ) &y;
