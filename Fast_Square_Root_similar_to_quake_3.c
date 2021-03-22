@@ -36,15 +36,15 @@ float Sqrt( float number ){
 
 int main( int argc, char **argv ){
 
-    if ( argc < 2 || 2 < argc ){
+    if ( argc != 2 ){
         printf( " Usage : %s <float_number> \n", argv[0] );
         printf( " Calculates sqrt of given float \n" );
-        exit(1);
+        exit(0);
     }
 
     // For command line use
     float number = atof( argv[1] );
-    
+
     // Normal input based
     //float number;
     //scanf("%f",&number);
