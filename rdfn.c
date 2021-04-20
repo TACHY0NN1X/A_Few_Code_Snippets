@@ -166,13 +166,14 @@ void swap(chem *a, chem *b, int n){
    int hlf, nj;
    hlf = n/2;
    int hlf1 = hlf-1;
+   int nm1 = n-1;
    
    for (int j=0; j<=hlf; j++){
       tmp      = *(b + j);
       *(b + j) = *(a + j);
       *(a + j) = tmp;
       
-      nj = n-1-j;
+      nj = nm1-j;
       tmp       = *(b + nj);
       *(b + nj) = *(a + nj);
       *(a + nj) = tmp;
