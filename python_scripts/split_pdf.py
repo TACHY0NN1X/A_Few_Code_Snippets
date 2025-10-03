@@ -99,14 +99,17 @@ Example usage:
 
     print(f"\n✂️ Splitting '{pdf_file}' into {num_parts} parts...")
 
-    base_name = os.path.splitext(pdf_file)[0]
+    base_name = os.path.splitext(os.path.basename(pdf_file))[0]  # just the file name without path
     extension = os.path.splitext(pdf_file)[1]
-
+    
+    # Create output directory based on PDF name
+    output_dir = f"{base_name}_parts"
+    os.makedirs(output_dir, exist_ok=True)  # Creates the dir if it doesn't exist
+    
     # Calculate pages per part, ensuring even distribution
     pages_per_part = math.ceil(total_pages / num_parts)
-    
     current_page = 1
-    
+
     print("\n🚀 Executing `qpdf` commands...")
     print("--------------------------------------------------------------------------------")
     
@@ -119,7 +122,7 @@ Example usage:
         if i == num_parts - 1:
             end_page = total_pages
 
-        output_filename = f"{base_name}_part{i+1}{extension}"
+        output_filename = os.path.join(output_dir, f"{base_name}_part{i+1}{extension}")
         
         # Construct the command as a list for subprocess.run for better security and handling of spaces
         qpdf_command = [
