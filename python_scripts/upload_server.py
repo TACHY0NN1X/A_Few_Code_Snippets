@@ -2,7 +2,7 @@
 """
 ====================================================
  A Single-File HTTP Server with Upload Capability
- Modernized for Python 3.13+
+ Modernized for Python 3.13+ (no deprecated `cgi`).
 ====================================================
 
  Features:
@@ -14,7 +14,6 @@
  - Unlimited mode with -s 0
  - Threaded server for parallel uploads
  - Shows local + LAN access URLs
- - Shows QR code via PIL on server startup
 """
 
 import http.server
@@ -28,62 +27,12 @@ from urllib.parse import unquote
 from email.parser import BytesParser
 from email.policy import default
 
-# Optional: only import if needed for QR
-try:
-    import qrcode
-except ImportError:
-    qrcode = None
-
 # Default settings
 UPLOAD_DIR = "uploads"
 DEFAULT_MAX_UPLOAD_SIZE = 2 * 1024**3  # 2 GB
 
 
 # ---------- Helper functions ----------
-
-def get_local_ips():
-    """Get 127.0.0.1 and LAN IP (if available)"""
-    ips = ['127.0.0.1']
-    try:
-        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
-            s.connect(("8.8.8.8", 80))
-            lan_ip = s.getsockname()[0]
-            if lan_ip != '127.0.0.1':
-                ips.append(lan_ip)
-    except Exception:
-        pass
-    # Deduplicate
-    seen = set()
-    result = []
-    for ip in ips:
-        if ip not in seen:
-            seen.add(ip)
-            result.append(ip)
-    return result
-
-
-def show_qr_code(url):
-    """Display QR code in a local window using PIL (via qrcode)"""
-    if not qrcode:
-        print("⚠️  'qrcode' module not installed — skipping QR display.")
-        print("   Install with: pip install qrcode[pil]")
-        return
-
-    try:
-        qr = qrcode.QRCode(
-            version=1,
-            error_correction=qrcode.constants.ERROR_CORRECT_L,
-            box_size=8,
-            border=4,
-        )
-        qr.add_data(url)
-        qr.make(fit=True)
-        img = qr.make_image(fill_color="black", back_color="white")
-        img.show(title="Scan to Open Server")
-        print(f"✅ QR code displayed for: {url}")
-    except Exception as e:
-        print(f"⚠️  Failed to show QR code: {e}")
-
 
 def sanitize_filename(name: str) -> str:
     """Strip dangerous path characters, nulls, spaces, etc."""
@@ -293,34 +242,18 @@ function uploadFiles(files) {{
 
 def run_server(directory, port):
     os.chdir(directory)
-    ips = get_local_ips()
-    urls = [f"http://{ip}:{port}" for ip in ips]
+    handler = UploadHandler
 
-    # Choose best URL for QR: prefer non-localhost
-    qr_url = urls[0]
-    for url in urls:
-        if not url.startswith("http://127.0.0.1"):
-            qr_url = url
-            break
-
-    # Show QR code in a local window (if qrcode is available)
-    show_qr_code(qr_url)
-
-    # Print info
-    host_ip = socket.gethostbyname(socket.gethostname())
-    limit_str = f"{MAX_UPLOAD_SIZE / (1024**3):.1f} GB" if MAX_UPLOAD_SIZE else "unlimited"
-    print(f"\n🌐 Serving HTTP on all interfaces (0.0.0.0:{port})")
-    print(f"Local access   → http://127.0.0.1:{port}")
-    print(f"Network access → http://{host_ip}:{port}")
-    print(f"Serving directory: {os.path.abspath(directory)}")
-    print(f"Uploads saved in: {os.path.abspath(UPLOAD_DIR)}")
-    print(f"Upload size limit: {limit_str}\n")
-
-    with socketserver.ThreadingTCPServer(("", port), UploadHandler) as httpd:
-        try:
-            httpd.serve_forever()
-        except KeyboardInterrupt:
-            print("\n🛑 Shutting down...")
+    with socketserver.ThreadingTCPServer(("", port), handler) as httpd:
+        host_ip = socket.gethostbyname(socket.gethostname())
+        limit_str = f"{MAX_UPLOAD_SIZE / (1024**3):.1f} GB" if MAX_UPLOAD_SIZE else "unlimited"
+        print(f"\n🌐 Serving HTTP on all interfaces (0.0.0.0:{port})")
+        print(f"Local access   → http://127.0.0.1:{port}")
+        print(f"Network access → http://{host_ip}:{port}")
+        print(f"Serving directory: {os.path.abspath(directory)}")
+        print(f"Uploads saved in: {os.path.abspath(UPLOAD_DIR)}")
+        print(f"Upload size limit: {limit_str}\n")
+        httpd.serve_forever()
 
 
 # ---------- Main entry ----------
