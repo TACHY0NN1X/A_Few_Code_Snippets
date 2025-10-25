@@ -2,11 +2,7 @@
 """
 ====================================================
  A Single-File HTTP Server with Upload Capability
-<<<<<<< HEAD
- Modernized for Python 3.13+
-=======
  Modernized for Python 3.13+ (no deprecated `cgi`).
->>>>>>> 1d5c08b (Updated Upload Server)
 ====================================================
 
  Features:
@@ -18,10 +14,7 @@
  - Unlimited mode with -s 0
  - Threaded server for parallel uploads
  - Shows local + LAN access URLs
-<<<<<<< HEAD
  - Shows QR code via PIL on server startup
-=======
->>>>>>> 1d5c08b (Updated Upload Server)
 """
 
 import http.server
@@ -35,15 +28,12 @@ from urllib.parse import unquote
 from email.parser import BytesParser
 from email.policy import default
 
-<<<<<<< HEAD
 # Optional: only import if needed for QR
 try:
     import qrcode
 except ImportError:
     qrcode = None
 
-=======
->>>>>>> 1d5c08b (Updated Upload Server)
 # Default settings
 UPLOAD_DIR = "uploads"
 DEFAULT_MAX_UPLOAD_SIZE = 2 * 1024**3  # 2 GB
@@ -51,7 +41,6 @@ DEFAULT_MAX_UPLOAD_SIZE = 2 * 1024**3  # 2 GB
 
 # ---------- Helper functions ----------
 
-<<<<<<< HEAD
 def get_local_ips():
     """Get 127.0.0.1 and LAN IP (if available)"""
     ips = ['127.0.0.1']
@@ -96,8 +85,6 @@ def show_qr_code(url):
         print(f"⚠️  Failed to show QR code: {e}")
 
 
-=======
->>>>>>> 1d5c08b (Updated Upload Server)
 def sanitize_filename(name: str) -> str:
     """Strip dangerous path characters, nulls, spaces, etc."""
     name = name.replace('\x00', '')
@@ -306,7 +293,6 @@ function uploadFiles(files) {{
 
 def run_server(directory, port):
     os.chdir(directory)
-<<<<<<< HEAD
     ips = get_local_ips()
     urls = [f"http://{ip}:{port}" for ip in ips]
 
@@ -338,7 +324,6 @@ def run_server(directory, port):
 
 
 # ---------- Main entry ----------
-=======
     handler = UploadHandler
 
     with socketserver.ThreadingTCPServer(("", port), handler) as httpd:
@@ -351,7 +336,6 @@ def run_server(directory, port):
         print(f"Uploads saved in: {os.path.abspath(UPLOAD_DIR)}")
         print(f"Upload size limit: {limit_str}\n")
         httpd.serve_forever()
->>>>>>> 1d5c08b (Updated Upload Server)
 
 
 # ---------- Main entry ----------
