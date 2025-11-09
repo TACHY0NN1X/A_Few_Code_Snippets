@@ -1,0 +1,15 @@
+return {
+  { "ellisonleao/gruvbox.nvim" },
+  { "rebelot/kanagawa.nvim" },
+  -- { "projekt0n/github-nvim-theme" },
+  { "loctvl842/monokai-pro.nvim" },
+  { "kdheepak/monochrome.nvim" },
+  { "AlexvZyl/nordic.nvim" },
+  { "Everblush/nvim" },
+  { "slugbyte/lackluster.nvim" },
+  { "Mofiqul/vscode.nvim" },
+  { "LunarVim/darkplus.nvim" },
+  { "metalelf0/jellybeans-nvim" },
+  { "trusktr/seti.vim" },
+  -- { "savq/melange-nvim" },
+}
