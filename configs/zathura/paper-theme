@@ -1,0 +1,60 @@
+# ======================================
+#  Paper-like Theme with True Image Colors
+# ======================================
+
+# Window and clipboard behavior
+set window-title-basename "true"
+set selection-clipboard "clipboard"
+
+# --- Core Colors (Warm Paper Tone) ---
+set default-bg                  "#F7D479"
+set default-fg                  "#683816"
+
+# --- Notifications ---
+set notification-bg             "#F7D479"
+set notification-fg             "#683816"
+set notification-error-bg       "#FF5555"
+set notification-error-fg       "#FFFFFF"
+set notification-warning-bg     "#FFB86C"
+set notification-warning-fg     "#683816"
+
+# --- Completion Menu ---
+set completion-bg               "#F7D479"
+set completion-fg               "#8B5E3C"
+set completion-group-bg         "#F7D479"
+set completion-group-fg         "#8B5E3C"
+set completion-highlight-bg     "#E6C260"
+set completion-highlight-fg     "#683816"
+
+# --- Index (Table of Contents) ---
+set index-bg                    "#F7D479"
+set index-fg                    "#683816"
+set index-active-bg             "#E6C260"
+set index-active-fg             "#683816"
+
+# --- Input Bar ---
+set inputbar-bg                 "#F7D479"
+set inputbar-fg                 "#683816"
+
+# --- Status Bar ---
+set statusbar-bg                "#E6C260"
+set statusbar-fg                "#683816"
+
+# --- Recolor Mode ---
+# Enable paper-like recoloring, but preserve image hue
+set recolor true
+set recolor-keephue true
+
+# --- Recolor Colors ---
+set recolor-lightcolor          "#F7D479"
+set recolor-darkcolor           "#683816"
+
+# --- Toggling Recolor ---
+# Toggle recolor mode anytime (Ctrl + R)
+map <C-r> recolor
+
+# --- Misc Preferences ---
+set adjust-open "width"          # Open files to fit width
+set scroll-page-aware "true"
+set smooth-scroll "true"
+
