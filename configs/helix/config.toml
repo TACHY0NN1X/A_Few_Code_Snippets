@@ -1,7 +1,7 @@
 #######################################
 #              THEME
 #######################################
-theme = "tokyonight"   # Requires tokyonight.toml in ~/.config/helix/themes
+theme = "gruvbox_dark_hard"   # Requires tokyonight.toml in ~/.config/helix/themes
 
 
 #######################################
@@ -10,16 +10,38 @@ theme = "tokyonight"   # Requires tokyonight.toml in ~/.config/helix/themes
 [editor]
 line-number = "absolute"     # Show absolute line numbers
 mouse = true                 # Enable mouse (click to move cursor)
+middle-click-paste = true
+
 auto-completion = true       # Enable completion engine
+completion-timeout = 5
+completion-trigger-len = 2
+
 path-completion = true       # Autocomplete filesystem paths
+
 auto-format = true           # Format on save if LSP supports it
 auto-info = true             # Show docs/tooltips automatically
+
 bufferline = "multiple"      # Show open buffers in the top bar
+
 indent-heuristic = "tree-sitter"   # Smarter indentation
 end-of-line-diagnostics = "hint"   # Show diagnostics inline
+
 cursorline = true            # Highlight the current line
 color-modes = true           # Mode changes can affect UI colors
+
 popup-border = "all"         # Draw border around popup menus
+clipboard-provider = "wayland" 
+
+#pasteboard        (macOS)
+#wayland           (Linux Wayland wl-clipboard)
+#x-clip            (Linux X11 xclip)
+#x-sel             (Linux X11 xsel)
+#win32-yank        (Windows)
+#tmux              (inside tmux session)
+#termux            (Android/Termux clipboard)
+#termcode
+#custom
+#none
 
 #######################################
 #            SMART TAB
@@ -32,13 +54,14 @@ popup-border = "all"         # Draw border around popup menus
 cursor-line = "warning"     # Show diagnostics only for the active line
 other-lines = "warning"
 
+
 #######################################
 #             STATUSLINE
 #######################################
 [editor.statusline]
 left   = ["mode", "spinner", "read-only-indicator", "file-modification-indicator"]
 center = ["file-name", "version-control"]
-right  = ["diagnostics", "selections", "position", "file-encoding", "file-line-ending", "file-type"]
+right  = ["diagnostics", "position", "file-encoding", "file-type"]
 separator = "  "           # Powerline-style separator
 
 # Powerline mode labels/icons:
@@ -79,20 +102,44 @@ display-color-swatches = true
 auto-signature-help = true
 snippets = true
 
+
 #######################################
 #         INDENT / GUIDELINES
 #######################################
 [editor.indent-guides]
 render = true
-character = "╎"
+character = "┆" # Some characters that work well: "▏", "┆", "┊", "⸽"
 skip-levels = 1
 
 
 #######################################
 #             KEYMAPS
 #######################################
+
 [keys.normal]
-# Launch external terminal (requires kitty installed)
+# Universal escape: go to normal mode, collapse selections and multi-cursors
+esc = ["collapse_selection", "keep_primary_selection", "normal_mode"]
+
+# Open terminal (your existing binding)
 t = """:run-shell-command kitty &"""
-S-v = "extend_line_below"
-esc = "keep_primary_selection"
+
+# Shift+V → Start linewise selection (Vim style)
+V = ["select_mode", "extend_to_line_bounds"]
+
+# Multi-cursor: Ctrl+j (down), Ctrl+k (up)
+"C-j" = "copy_selection_on_next_line"
+"C-k" = "copy_selection_on_prev_line"
+
+
+[keys.select]
+# Universal cancel here too
+esc = ["collapse_selection", "keep_primary_selection", "normal_mode"]
+
+# Extend selection with arrow keys
+up = "extend_line_above"
+down = "extend_line_below"
+
+[keys.insert]
+# Same escape behavior while typing
+esc = ["collapse_selection", "keep_primary_selection", "normal_mode"]
+
