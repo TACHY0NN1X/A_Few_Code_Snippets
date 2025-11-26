@@ -149,7 +149,6 @@ mcd() {
 
 export EDITOR=helix
 alias nv='neovide --fork'
-alias anime='fastanime --icons --preview full --selector fzf anilist'
 alias webui='DATA_DIR=~/.open-webui uvx --offline --python 3.11 open-webui serve --port 9999'
 
 

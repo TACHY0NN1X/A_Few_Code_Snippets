@@ -1,10 +1,6 @@
 -- =====================================================================
 -- 💤 init.lua — Neovim configuration using LazyVim
 -- =====================================================================
--- This file sets up basic editor behavior and integrates LazyVim plugin
--- management. It’s minimal, opinionated, and heavily commented so you
--- can easily tweak it later.
--- =====================================================================
 
 -- ---------------------------------------------------------------------
 -- 🧩 1. Load LazyVim
@@ -21,8 +17,19 @@ require("config.lazy")
 -- For readability, all options are grouped logically.
 -- ---------------------------------------------------------------------
 local opt = vim.opt -- Shorthand
+local global = vim.g -- Global
+local map = vim.keymap.set
 
 -- UI ------------------------------------------------------------------
+
+-- Gruvbox Settings
+global.gruvbox_material_background = "hard"
+global.gruvbox_material_foreground = "original"
+global.gruvbox_material_enable_italic = 1
+global.gruvbox_material_enable_bold = 1
+
+vim.cmd.colorscheme("gruvbox-material")
+
 opt.number = true -- Show absolute line numbers
 opt.relativenumber = false -- Disable relative line numbers
 opt.cursorline = true -- Highlight current line
@@ -30,6 +37,7 @@ opt.termguicolors = true -- Enable 24-bit RGB color in terminal
 opt.signcolumn = "yes" -- Always show sign column (for git/lsp)
 opt.wrap = false -- No line wrapping
 opt.scrolloff = 8 -- Keep 8 lines visible above/below cursor
+opt.list = true -- Show whitespace
 
 -- Indentation ---------------------------------------------------------
 opt.tabstop = 3 -- A tab equals 3 spaces
@@ -60,16 +68,17 @@ opt.updatetime = 200 -- Faster updates for diagnostics
 opt.splitbelow = true -- Horizontal splits open below
 opt.splitright = true -- Vertical splits open to the right
 
+-- Language ------------------------------------------------------------
+opt.spell = true
+opt.spelllang = "en_gb,en_us"
+
 -- ---------------------------------------------------------------------
 -- 🪄 3. Useful Keymaps
 -- ---------------------------------------------------------------------
 -- You can add quick custom mappings below.
 -- LazyVim already sets up good defaults, so add only unique ones here.
 -- ---------------------------------------------------------------------
-local map = vim.keymap.set
 
-map("n", "<leader>w", ":w<CR>", { desc = "Save file" })
-map("n", "<leader>q", ":q<CR>", { desc = "Quit window" })
 map("n", "<leader>h", ":nohlsearch<CR>", { desc = "Clear search highlight" })
 
 -- ---------------------------------------------------------------------
@@ -77,25 +86,29 @@ map("n", "<leader>h", ":nohlsearch<CR>", { desc = "Clear search highlight" })
 -- ---------------------------------------------------------------------
 -- These are optional but nice to have.
 -- ---------------------------------------------------------------------
-vim.cmd([[
-  set showcmd              " Show partial commands in status line
-  set ruler                " Show line and column number of cursor
-  set laststatus=3         " Global status line
-  set mouse=a              " Enable mouse
-]])
+opt.showcmd = true -- Show partial commands in status line
+opt.ruler = true -- Show line and column number of cursor
+opt.laststatus = 3 -- Global status line
+opt.mouse = "a" -- Enable mouse
 
+-- ---------------------------------------------------------------------
+-- ⚠️ Diagnostics
+-- ---------------------------------------------------------------------
 vim.diagnostic.config({
   virtual_text = { severity = vim.diagnostic.severity.ERROR },
   signs = { severity = vim.diagnostic.severity.ERROR },
   underline = { severity = vim.diagnostic.severity.ERROR },
 })
 
-vim.cmd("colorscheme tokyonight-night")
+global.vimtex_quickfix_ignore_filters = { "warning" }
 
-require("lspconfig").ltex.setup({
-  settings = {
-    ltex = {
-      checkFrequency = "save", -- or "edit" / "manual"
-    },
-  },
-})
+-- Plugins
+global.ai_cmp = true
+
+-- --------------------------------------------------------------------
+-- Neovide Setup
+-- --------------------------------------------------------------------
+if vim.g.neovide then
+  opt.guifont = "FantasqueSansM Nerd Font:h13"
+  vim.g.neovide_scale_factor = 1.0
+end
