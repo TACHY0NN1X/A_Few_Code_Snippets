@@ -91,6 +91,10 @@ opt.ruler = true -- Show line and column number of cursor
 opt.laststatus = 3 -- Global status line
 opt.mouse = "a" -- Enable mouse
 
+opt.statuscolumn = "%l%=%s"
+opt.numberwidth = 3
+opt.foldcolumn = "0"
+
 -- ---------------------------------------------------------------------
 -- ⚠️ Diagnostics
 -- ---------------------------------------------------------------------
